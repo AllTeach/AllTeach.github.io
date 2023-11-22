@@ -19,20 +19,20 @@ function checkGuess() {
   const message = document.getElementById('message');
 
   if (isNaN(guess) || guess < 1 || guess > 100) {
-    message.textContent = 'Please enter a valid number between 1 and 100.';
+    message.textContent = 'הכניסו מספר חוקי בין 1 ל 100';
     return;
   }
 
   attempts++;
 
   if (guess === randomNumber) {
-    message.textContent = `Congratulations! You guessed the correct number ${randomNumber} in ${attempts} attempts.`;
+    message.textContent = `כל הכבוד ניחשתם את המספר ${randomNumber}  ב ${attempts}  נסיונות`;
     disableInput();
     togglePlayAgain();
   } else if (guess < randomNumber) {
-    message.textContent = 'Try a higher number.';
+    message.textContent = 'נסו מספר גדול יותר';
   } else {
-    message.textContent = 'Try a lower number.';
+    message.textContent = 'נסו מספר קטן יותר';
   }
 }
 
