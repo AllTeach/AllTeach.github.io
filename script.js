@@ -19,7 +19,7 @@ function checkGuess() {
   const message = document.getElementById('message');
 
   if (isNaN(guess) || guess < 1 || guess > 1000000) {
-    message.textContent = 'הכניסו מספר חוקי בין 1 ל 100';
+    message.textContent = 'הכניסו מספר חוקי בין 1 ל 1000000';
     return;
   }
 
