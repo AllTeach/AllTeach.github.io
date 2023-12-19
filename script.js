@@ -1,4 +1,4 @@
-let randomNumber = Math.floor(Math.random() * 1000000) + 1;
+let randomNumber = Math.floor(Math.random() * 1000) + 1;
 
 let attempts = 0;
 
@@ -7,7 +7,7 @@ function playAgain() {
   enableInput();
   document.getElementById('message').textContent="";
   document.getElementById('guessField').value="";
-  randomNumber = Math.floor(Math.random() * 1000000) + 1;
+  randomNumber = Math.floor(Math.random() * 1000) + 1;
 
  attempts = 0;
   
@@ -18,8 +18,8 @@ function checkGuess() {
   const guess = parseInt(document.getElementById('guessField').value);
   const message = document.getElementById('message');
 
-  if (isNaN(guess) || guess < 1 || guess > 1000000) {
-    message.textContent = 'הכניסו מספר חוקי בין 1 ל 1000000';
+  if (isNaN(guess) || guess < 1 || guess > 1000) {
+    message.textContent = 'הכניסו מספר חוקי בין 1 ל 1000';
     return;
   }
 
