@@ -1,45 +1,75 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Guess the Number Game</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Escape Room - AI Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
+        h1 {
+            color: #333;
+        }
+
+        div {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #555;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #webcam-container {
+            margin-top: 20px;
+        }
+
+        #label-container {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #444;
+        }
+    </style>
 </head>
 
 <body>
-  <h1>Guess the Number Game  ניחוש מספר</h1>
-  <p>Guess a number between 1 and 1000</p>
-</br>
-  <p>נחשו מספר בתחום 1-1000</p>
-  <input type="text" id="guessField">
-  <button onclick="checkGuess()">בדקו תשובה</button>
-  <p id="message"></p>
-
-  <button id="btnAgain" onclick="playAgain()" hidden="hidden">שחקו שוב</button>
-
-  <script src="script.js"></script>
-
-
-
-    <div>Teachable Machine Image Model</div>
-    <button type="button" onclick="init()">Start</button>
+    <h1>Escape Room - AI Challenge</h1>
+    <div>שלב הלווין - נבדוק האם הלויין שלנו יודע לזהות ציפורים</div>
+    <button type="button" onclick="init()">לחצו כאן לבדיקה</button>
     <div id="webcam-container"></div>
     <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js">
+    </script>
     <script type="text/javascript">
         // More API functions here:
         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
     //
         // the link to your model provided by Teachable Machine export panel
         const URL = "https://teachablemachine.withgoogle.com/models/OeFF6BVFA/";
-    
         let model, webcam, labelContainer, maxPredictions;
     
         // Load the image model and setup the webcam
         async function init() {
-            const modelURL = URL + "model.json";
+            const modelURL =URL + "model.json";
             const metadataURL = URL + "metadata.json";
     
             // load the model and metadata
@@ -50,7 +80,7 @@
             maxPredictions = model.getTotalClasses();
     
             // Convenience function to setup a webcam
-            const flip = true; // whether to flip the webcam
+            const flip = false; // whether to flip the webcam
             webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
             await webcam.setup(); // request access to the webcam
             await webcam.play();
@@ -82,7 +112,7 @@
         }
     </script>
     
-
-</body>
+    </body>
 
 </html>
+
