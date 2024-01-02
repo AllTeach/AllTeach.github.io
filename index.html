@@ -66,9 +66,30 @@
         // the link to your model provided by Teachable Machine export panel
         const URL = "https://teachablemachine.withgoogle.com/models/OeFF6BVFA/";
         let model, webcam, labelContainer, maxPredictions;
-    
+        async function initFrontCamera() {
+    try {
+        const constraints = {
+            video: { facingMode: 'user' }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        // Do something with the stream (e.g., display it in a video element)
+        videoElement.srcObject = stream;
+        videoElement.autoplay = true;
+        document.body.appendChild(videoElement);
+
+    } catch (error) {
+        console.error('Error accessing the front camera:', error);
+    }
+}
+const videoElement = document.createElement('video');
+
+// Call the function to initialize the front camera
         // Load the image model and setup the webcam
         async function init() {
+            initFrontCamera();
+
             const modelURL =URL + "model.json";
             const metadataURL = URL + "metadata.json";
     
@@ -81,13 +102,13 @@
     
             // Convenience function to setup a webcam
             const flip = true; // whether to flip the webcam
-            webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-            await webcam.setup(); // request access to the webcam
-            await webcam.play();
+         ///   webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        ///    await webcam.setup(); // request access to the webcam
+         ///   await webcam.play();
             window.requestAnimationFrame(loop);
     
             // append elements to the DOM
-            document.getElementById("webcam-container").appendChild(webcam.canvas);
+        ///    document.getElementById("webcam-container").appendChild(webcam.canvas);
             labelContainer = document.getElementById("label-container");
             for (let i = 0; i < maxPredictions; i++) { // and class labels
                 labelContainer.appendChild(document.createElement("div"));
@@ -95,7 +116,7 @@
         }
     
         async function loop() {
-            webcam.update(); // update the webcam frame
+            ///webcam.update(); // update the webcam frame
             await predict();
             window.requestAnimationFrame(loop);
         }
@@ -103,7 +124,7 @@
         // run the webcam image through the image model
         async function predict() {
             // predict can take in an image, video or canvas html element
-            const prediction = await model.predict(webcam.canvas);
+            const prediction = await model.predict(videoElement);///(webcam.canvas);
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
