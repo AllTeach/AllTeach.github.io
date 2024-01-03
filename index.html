@@ -11,10 +11,14 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+
+
+            
         }
 
         h1 {
             color: #333;
+            
         }
 
         div {
@@ -24,10 +28,11 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 15px 20px;
             background-color: #3498db;
             color: white;
             border: none;
+            margin-top: 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
@@ -47,6 +52,31 @@
             font-size: 18px;
             color: #444;
         }
+
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 20px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .progress-container {
+            width: 300px;
+            margin: 20px auto; /* Center the container horizontally */
+        }
+
     </style>
 </head>
 
@@ -54,6 +84,14 @@
     <h1>Escape Room - AI Challenge</h1>
     <div>שלב הלווין - נבדוק האם הלויין שלנו יודע לזהות ציפורים</div>
     <button type="button" onclick="init()">לחצו כאן לבדיקה</button>
+
+    <div class="progress-container">
+
+    <div class="progress-bar">
+        <div class="progress" id="progress" style="width: 20%;"></div>
+    </div>
+    </div>
+
     <div id="webcam-container"></div>
     <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -66,6 +104,8 @@
         // the link to your model provided by Teachable Machine export panel
         const URL = "https://teachablemachine.withgoogle.com/models/OeFF6BVFA/";
         let model, webcam, labelContainer, maxPredictions;
+
+        let counter = 0;
         async function initFrontCamera() {
     try {
         const constraints = {
@@ -85,9 +125,17 @@
 }
 const videoElement = document.createElement('video');
 
+const intervalId = setInterval(updateProgressBar, 1000);
+
+
 // Call the function to initialize the front camera
         // Load the image model and setup the webcam
         async function init() {
+
+          
+
+           // updateProgressBar(3); // You can call this function with different values to update the progress bar
+
             initFrontCamera();
 
             const modelURL =URL + "model.json";
@@ -129,8 +177,80 @@ const videoElement = document.createElement('video');
                 const classPrediction =
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                 labelContainer.childNodes[i].innerHTML = classPrediction;
+
+                if(i==0)
+                {
+                    if(prediction[i].probability.toFixed(2) > 0.75)
+                        counter++;
+                }
             }
         }
+
+
+        function updateProgressBar() {
+            const progress = document.getElementById('progress');
+   //         const progressText = document.getElementById('progressText');
+
+            const newValue = Math.min(Math.max(counter, 1), 5); // Ensure value is between 1 and 5
+            const widthPercentage = (newValue / 5) * 100;
+
+            progress.style.width = `${widthPercentage}%`;
+    //        progressText.textContent = `Progress: ${newValue}`;
+            if(counter>=5)
+            {
+
+                stopProcess();
+
+            }
+
+    
+        }
+
+        var beenHere = false;
+        function stopProcess(){
+            if(beenHere) return;
+
+            beenHere = true;
+            clearInterval(intervalId);
+
+            labelContainer = document.getElementById("label-container");
+            for (let i = 0; i < maxPredictions; i++) { // and class labels
+                labelContainer.childNodes[i].style.visibility = 'hidden';
+
+                
+                
+            }
+
+
+            // stop the video
+            videoElement.style.visibility= 'hidden';
+            const fin = document.createElement("div");
+            labelContainer.appendChild(fin);
+
+            fin.innerHTML = "Perfect! your code is: " + Math.abs(simpleHash("this is your code"));
+
+
+            
+
+
+        }
+
+
+    function simpleHash(input) {
+    let hash = 0;
+
+    if (input.length === 0) return hash;
+
+    for (let i = 0; i < input.length; i++) {
+        const char = input.charCodeAt(i);
+        hash = (hash << 5) - hash + char; // Bitwise shift and XOR operation
+        hash &= hash; // Ensure hash is a 32-bit signed integer
+    }
+
+    return hash;
+}
+
+
     </script>
     
     </body>
