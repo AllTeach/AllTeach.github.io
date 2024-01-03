@@ -186,17 +186,18 @@ const intervalId = setInterval(updateProgressBar, 1000);
             }
         }
 
+        const MAX_SCALE = 8;
 
         function updateProgressBar() {
             const progress = document.getElementById('progress');
    //         const progressText = document.getElementById('progressText');
 
-            const newValue = Math.min(Math.max(counter, 1), 5); // Ensure value is between 1 and 5
-            const widthPercentage = (newValue / 5) * 100;
+            const newValue = Math.min(Math.max(counter, 0), MAX_SCALE); // Ensure value is between 1 and 5
+            const widthPercentage = (newValue / MAX_SCALE) * 100;
 
             progress.style.width = `${widthPercentage}%`;
     //        progressText.textContent = `Progress: ${newValue}`;
-            if(counter>=5)
+            if(counter>=MAX_SCALE)
             {
 
                 stopProcess();
